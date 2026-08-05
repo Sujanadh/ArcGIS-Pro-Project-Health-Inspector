@@ -27,7 +27,7 @@ namespace APHI.AutoFix.Fixers
             {
                 try
                 {
-                    if (issue.TargetObject is Layer layer && issue.Properties.TryGetValue("SuggestedName", out var newNameObj) && newNameObj is string newName)
+                    if (issue.TargetObject is Layer layer && issue.Properties.TryGetValue("SuggestedName", out string newName))
                     {
                         layer.SetName(newName);
                         return true;

@@ -40,7 +40,7 @@ public class HealthIssue
     /// <summary>
     /// The path or URI of the affected item.
     /// </summary>
-    public string AffectedAffectedItemPath { get; set; } = string.Empty;
+    public string AffectedItemPath { get; set; } = string.Empty;
 
     /// <summary>
     /// The expected or recommended value.
@@ -91,6 +91,21 @@ public class HealthIssue
     /// The name of the layer where the issue was found (if applicable).
     /// </summary>
     public string LayerName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The target object (e.g. Map, Layer, ProjectItem) associated with this issue.
+    /// </summary>
+    public object TargetObject { get; set; }
+
+    /// <summary>
+    /// Additional properties used for autofixing.
+    /// </summary>
+    public System.Collections.Generic.Dictionary<string, string> Properties { get; set; } = new System.Collections.Generic.Dictionary<string, string>();
+
+    /// <summary>
+    /// The name of the analyzer that generated this issue.
+    /// </summary>
+    public string AnalyzerName { get; set; } = string.Empty;
 
     /// <summary>
     /// Returns a string representation of the issue.
