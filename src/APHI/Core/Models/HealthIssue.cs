@@ -107,6 +107,7 @@ public class HealthIssue
     /// </summary>
     public string AnalyzerName { get; set; } = string.Empty;
     public string FixerName { get; set; } = string.Empty;
+    public bool IsFixed { get; set; }
 
     /// <summary>
     /// Returns a string representation of the issue.

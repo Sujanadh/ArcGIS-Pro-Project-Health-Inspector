@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ArcGIS defaultAssembly="APHI.dll" defaultNamespace="APHI" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{3b1e7c9f-3d61-4c12-a7f9-2b0e3b9f4a12}" version="1.0.2" desktopVersion="3.3.0">
+  <AddInInfo id="{3b1e7c9f-3d61-4c12-a7f9-2b0e3b9f4a12}" version="1.0.3" desktopVersion="3.3.0">
     <Name>Project Health Inspector</Name>
     <Description>Analyzes ArcGIS Pro projects for performance, best practices, and data integrity issues.</Description>
     <Image>Images\HealthInspector32.png</Image>

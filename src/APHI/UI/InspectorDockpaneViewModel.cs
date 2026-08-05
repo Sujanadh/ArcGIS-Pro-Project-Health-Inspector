@@ -123,7 +123,7 @@ namespace APHI.UI
                 HighCount = results.Issues.Count(i => i.Severity == IssueSeverity.High);
                 MediumCount = results.Issues.Count(i => i.Severity == IssueSeverity.Medium);
                 LowCount = results.Issues.Count(i => i.Severity == IssueSeverity.Low);
-                InfoCount = results.Issues.Count(i => i.Severity == IssueSeverity.Info);
+                InfoCount = results.Issues.Count(i => i.Severity == IssueSeverity.Information);
                 ScanDuration = results.ScanDuration;
 
                 ApplyFilters();
@@ -201,7 +201,8 @@ namespace APHI.UI
         {
             if (SelectedIssue == null || !SelectedIssue.IsAutoFixable) return;
             
-            var vm = new AutoFixPreviewViewModel(SelectedIssue.Model);
+            var vm = new AutoFixPreviewViewModel();
+            vm.ProposedFixes.Add(SelectedIssue);
             var window = new AutoFixPreviewWindow { DataContext = vm };
             
             if (window.ShowDialog() == true)
