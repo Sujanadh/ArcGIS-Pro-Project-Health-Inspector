@@ -92,9 +92,9 @@ public class DuplicateLayerAnalyzer : IAnalyzer
 
                         // Check for duplicate data sources
                         var definition = layer.GetDefinition() as CIMFeatureLayer;
-                        if (definition?.DataConnection != null)
+                        if (definition?.FeatureTable?.DataConnection != null)
                         {
-                            var connString = GetConnectionString(definition.DataConnection);
+                            var connString = GetConnectionString(definition.FeatureTable.DataConnection);
                             if (!string.IsNullOrEmpty(connString) && !dataSources.Add(connString))
                             {
                                 issues.Add(new HealthIssue

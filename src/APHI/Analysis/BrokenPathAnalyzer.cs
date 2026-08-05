@@ -67,9 +67,9 @@ public class BrokenPathAnalyzer : IAnalyzer
                     await QueuedTask.Run(() =>
                     {
                         var definition = layer.GetDefinition() as CIMFeatureLayer;
-                        if (definition?.DataConnection != null)
+                        if (definition?.FeatureTable?.DataConnection != null)
                         {
-                            bool isBroken = CheckDataConnection(definition.DataConnection);
+                            bool isBroken = CheckDataConnection(definition.FeatureTable.DataConnection);
                             if (isBroken)
                             {
                                 issues.Add(new HealthIssue
@@ -80,7 +80,7 @@ public class BrokenPathAnalyzer : IAnalyzer
                                     Description = $"The data source for layer '{layer.Name}' is broken or inaccessible.",
                                     AffectedItem = layer.Name,
                                     AffectedItemPath = layer.URI,
-                                    CurrentValue = GetConnectionString(definition.DataConnection),
+                                    CurrentValue = GetConnectionString(definition.FeatureTable.DataConnection),
                                     ExpectedValue = "Accessible data source",
                                     Recommendation = "Update the layer's data source to point to a valid location.",
                                     Impact = "Layer will not draw or participate in analysis.",
