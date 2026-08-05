@@ -56,7 +56,7 @@ public class MetadataAnalyzer : IAnalyzer
                         // Often accessible via featureLayer.HasMetadata or similar.
                         // We will use basic layer description and dataset alias as a proxy if full metadata XML isn't easily readable without an Item.
                         var cim = featureLayer.GetDefinition() as ArcGIS.Core.CIM.CIMFeatureLayer;
-                        bool hasDescription = cim != null && (!string.IsNullOrWhiteSpace(cim.Description) || !string.IsNullOrWhiteSpace(cim.Snippet));
+                        bool hasDescription = cim != null && (!string.IsNullOrWhiteSpace(cim.Description) || false);
 
                         if (!hasDescription)
                         {

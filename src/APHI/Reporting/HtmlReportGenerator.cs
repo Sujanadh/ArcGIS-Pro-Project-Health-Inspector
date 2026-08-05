@@ -72,8 +72,8 @@ namespace APHI.Reporting
                 
                 var sortedIssues = report.Issues
                     .OrderBy(i => i.Severity == IssueSeverity.Critical ? 0 :
-                                  i.Severity == IssueSeverity.Warning ? 1 :
-                                  i.Severity == IssueSeverity.Info ? 2 : 3)
+                                  i.Severity == IssueSeverity.Medium ? 1 :
+                                  i.Severity == IssueSeverity.Information ? 2 : 3)
                     .ThenBy(i => i.Category).ToList();
 
                 foreach (var issue in sortedIssues)

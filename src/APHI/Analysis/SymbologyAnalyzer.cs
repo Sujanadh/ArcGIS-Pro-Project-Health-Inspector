@@ -24,7 +24,7 @@ public class SymbologyAnalyzer : IAnalyzer
     public string Description => "Checks layer symbology for missing symbols, broken style references, and unsupported types.";
 
     /// <inheritdoc />
-    public IssueCategory Category => IssueCategory.Symbology;
+    public IssueCategory Category => IssueCategory.SymbologyIssue;
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ public class SymbologyAnalyzer : IAnalyzer
             
             progress?.Report(new ScanProgress 
             { 
-                Message = $"Analyzing symbology in map: {mapItem.Name}", 
+                CurrentOperation = $"Analyzing symbology in map: {mapItem.Name}", 
                 PercentComplete = (currentMap * 100) / (totalMaps > 0 ? totalMaps : 1) 
             });
 

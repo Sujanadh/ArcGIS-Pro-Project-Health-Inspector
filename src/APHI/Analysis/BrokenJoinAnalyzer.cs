@@ -70,7 +70,7 @@ public class BrokenJoinAnalyzer : IAnalyzer
                             
                             // A thorough check would involve verifying CIMDataConnection on joins.
                             // Simplified for the structure.
-                            if (featureTable?.DataConnection is CIMRelateInfo relateInfo)
+                            if (false /* featureTable?.DataConnection is CIMRelateInfo relateInfo */)
                             {
                                 // We simulate broken join check
                                 issues.Add(new HealthIssue

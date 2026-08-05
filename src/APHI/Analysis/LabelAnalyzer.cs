@@ -73,7 +73,7 @@ public class LabelAnalyzer : IAnalyzer
                             {
                                 foreach (var labelClass in labelClasses)
                                 {
-                                    if (labelClass.ExpressionEngine == "VBScript")
+                                    if (labelClass.ExpressionEngine == LabelExpressionEngine.VBScript)
                                     {
                                         issues.Add(new HealthIssue
                                         {
@@ -83,7 +83,7 @@ public class LabelAnalyzer : IAnalyzer
                                             Description = $"Layer '{layer.Name}' uses VBScript for labeling, which is deprecated.",
                                             AffectedItem = layer.Name,
                                             AffectedItemPath = layer.URI,
-                                            CurrentValue = "VBScript",
+                                            CurrentValue = LabelExpressionEngine.VBScript,
                                             ExpectedValue = "Arcade or Python",
                                             Recommendation = "Migrate label expressions to Arcade or Python.",
                                             Impact = "VBScript expressions may cause errors or not run in future releases/enterprise environments.",
@@ -94,7 +94,7 @@ public class LabelAnalyzer : IAnalyzer
                                             LayerName = layer.Name
                                         });
                                     }
-                                    else if (labelClass.ExpressionEngine == "Python" || labelClass.ExpressionEngine == "Arcade")
+                                    else if (labelClass.ExpressionEngine == LabelExpressionEngine.Python || labelClass.ExpressionEngine == LabelExpressionEngine.Arcade)
                                     {
                                         if (labelClass.Expression != null && labelClass.Expression.Length > 200)
                                         {

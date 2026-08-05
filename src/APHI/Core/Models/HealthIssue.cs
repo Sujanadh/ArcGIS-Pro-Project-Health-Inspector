@@ -106,6 +106,7 @@ public class HealthIssue
     /// The name of the analyzer that generated this issue.
     /// </summary>
     public string AnalyzerName { get; set; } = string.Empty;
+    public string FixerName { get; set; } = string.Empty;
 
     /// <summary>
     /// Returns a string representation of the issue.

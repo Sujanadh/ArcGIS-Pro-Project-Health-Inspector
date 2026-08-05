@@ -49,9 +49,7 @@ public class NetworkPathAnalyzer : IAnalyzer
                     var connection = featureLayer.GetTable()?.GetDatastore()?.GetConnector() as ArcGIS.Core.Data.DatabaseConnectionProperties;
                     if (connection == null) continue;
                     string connectionString = connection.Instance ?? string.Empty;
-                    if (connection == null) continue;
-
-                    string connectionString = connection.Instance ?? string.Empty;
+                    // duplicate code removed
                     
                     if (string.IsNullOrEmpty(connectionString)) continue;
 

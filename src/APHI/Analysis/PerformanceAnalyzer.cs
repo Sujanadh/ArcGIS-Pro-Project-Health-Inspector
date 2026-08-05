@@ -72,7 +72,7 @@ public class PerformanceAnalyzer : IAnalyzer
 
                         // Labeling
                         var cim = featureLayer.GetDefinition() as ArcGIS.Core.CIM.CIMFeatureLayer;
-                        if (cim != null && cim.UseVisibility) { score -= 2; }
+                        if (cim != null && cim.Visibility) { score -= 2; }
 
                         // Try to evaluate count if safe
                         try
