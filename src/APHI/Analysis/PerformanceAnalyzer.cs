@@ -23,10 +23,10 @@ public class PerformanceAnalyzer : IAnalyzer
     public string Description => "Evaluates map performance based on feature counts, layer counts, transparency, and labeling complexity.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => false;
+    public IssueCategory Category => IssueCategory.Performance;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
         var maps = context.Project.GetItems<MapProjectItem>().ToList();
@@ -51,8 +51,8 @@ public class PerformanceAnalyzer : IAnalyzer
                     {
                         Category = IssueCategory.Performance,
                         Severity = IssueSeverity.Medium,
-                        ItemName = mapItem.Name,
-                        ItemPath = mapItem.Name,
+                        AffectedItem = mapItem.Name,
+                        AffectedItemPath = mapItem.Name,
                         Description = $"Map has > 50 layers ({totalLayers}).",
                         Recommendation = "Remove unnecessary layers or group them into composite map services.",
                         AnalyzerName = this.Name
@@ -91,8 +91,8 @@ public class PerformanceAnalyzer : IAnalyzer
                                     {
                                         Category = IssueCategory.Performance,
                                         Severity = IssueSeverity.Medium,
-                                        ItemName = layer.Name,
-                                        ItemPath = mapItem.Name,
+                                        AffectedItem = layer.Name,
+                                        AffectedItemPath = mapItem.Name,
                                         Description = $"Layer contains a very large dataset (>100K features, count={count}).",
                                         Recommendation = "Consider applying a definition query or building a spatial index to improve drawing performance.",
                                         AnalyzerName = this.Name
@@ -122,8 +122,8 @@ public class PerformanceAnalyzer : IAnalyzer
                     {
                         Category = IssueCategory.Performance,
                         Severity = severity,
-                        ItemName = mapItem.Name,
-                        ItemPath = mapItem.Name,
+                        AffectedItem = mapItem.Name,
+                        AffectedItemPath = mapItem.Name,
                         Description = $"Map performance score is low ({score}/100) due to complex layers, transparency, or large datasets.",
                         Recommendation = "Review the map for unnecessary transparency, complex labels, and large unindexed datasets.",
                         AnalyzerName = this.Name

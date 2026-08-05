@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
-using APHI.Models;
+using APHI.Core.Models;
 
 namespace APHI.AutoFix.Fixers
 {
@@ -21,7 +21,7 @@ namespace APHI.AutoFix.Fixers
         /// </summary>
         /// <param name="issue">The issue representing the broken path.</param>
         /// <returns>True if fixed, otherwise false.</returns>
-        public async Task<bool> FixAsync(IssueModel issue)
+        public async Task<bool> FixAsync(HealthIssue issue)
         {
             return await QueuedTask.Run(() =>
             {

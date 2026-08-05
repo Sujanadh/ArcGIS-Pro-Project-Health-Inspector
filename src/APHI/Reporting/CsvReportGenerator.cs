@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-using APHI.Models;
+using APHI.Core.Models;
 
 namespace APHI.Reporting
 {

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using APHI.Models;
+using APHI.Core.Models;
 
 namespace APHI.Reporting
 {

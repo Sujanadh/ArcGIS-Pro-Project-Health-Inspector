@@ -24,10 +24,10 @@ public class NetworkPathAnalyzer : IAnalyzer
     public string Description => "Checks layer data sources for UNC paths, mapped drives, or disconnected network paths.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => false;
+    public IssueCategory Category => IssueCategory.NetworkPath;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
         var maps = context.Project.GetItems<MapProjectItem>().ToList();
@@ -63,8 +63,8 @@ public class NetworkPathAnalyzer : IAnalyzer
                         {
                             Category = IssueCategory.NetworkPath,
                             Severity = IssueSeverity.Medium,
-                            ItemName = layer.Name,
-                            ItemPath = mapItem.Name,
+                            AffectedItem = layer.Name,
+                            AffectedItemPath = mapItem.Name,
                             Description = $"Layer uses a UNC network path: {connectionString}",
                             Recommendation = "Consider storing data locally or in an enterprise geodatabase for better performance, or ensure robust network connectivity.",
                             AnalyzerName = this.Name
@@ -77,8 +77,8 @@ public class NetworkPathAnalyzer : IAnalyzer
                             {
                                 Category = IssueCategory.NetworkPath,
                                 Severity = IssueSeverity.High,
-                                ItemName = layer.Name,
-                                ItemPath = mapItem.Name,
+                                AffectedItem = layer.Name,
+                                AffectedItemPath = mapItem.Name,
                                 Description = $"Network path is currently inaccessible: {connectionString}",
                                 Recommendation = "Check network connection, VPN, or repair the broken data source.",
                                 AnalyzerName = this.Name
@@ -91,8 +91,8 @@ public class NetworkPathAnalyzer : IAnalyzer
                         {
                             Category = IssueCategory.NetworkPath,
                             Severity = IssueSeverity.Low,
-                            ItemName = layer.Name,
-                            ItemPath = mapItem.Name,
+                            AffectedItem = layer.Name,
+                            AffectedItemPath = mapItem.Name,
                             Description = $"Layer uses a mapped network drive: {connectionString}",
                             Recommendation = "Mapped drives can cause portability issues across different user profiles. Use relative paths or enterprise geodatabases instead.",
                             AnalyzerName = this.Name

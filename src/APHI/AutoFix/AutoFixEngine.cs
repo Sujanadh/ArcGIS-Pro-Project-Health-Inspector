@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
-using APHI.Models;
+using APHI.Core.Models;
 
 namespace APHI.AutoFix
 {
@@ -22,7 +22,7 @@ namespace APHI.AutoFix
         /// </summary>
         /// <param name="issue">The issue to fix.</param>
         /// <returns>A boolean indicating success.</returns>
-        Task<bool> FixAsync(IssueModel issue);
+        Task<bool> FixAsync(HealthIssue issue);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace APHI.AutoFix
         /// </summary>
         /// <param name="issues">The issues to fix.</param>
         /// <returns>A log of the operations performed.</returns>
-        public async Task<OperationLog> FixIssuesAsync(IEnumerable<IssueModel> issues)
+        public async Task<OperationLog> FixIssuesAsync(IEnumerable<HealthIssue> issues)
         {
             var log = new OperationLog();
 

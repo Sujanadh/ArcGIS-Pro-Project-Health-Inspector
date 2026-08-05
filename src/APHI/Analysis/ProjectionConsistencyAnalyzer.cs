@@ -81,7 +81,7 @@ public class ProjectionConsistencyAnalyzer : IAnalyzer
                                 Title = "Projection Mismatch",
                                 Description = $"Layer '{layer.Name}' has a different spatial reference than the map.",
                                 AffectedItem = layer.Name,
-                                AffectedItemPath = layer.URI,
+                                AffectedAffectedItemPath = layer.URI,
                                 CurrentValue = $"WKID: {layerSr.Wkid}, Name: {layerSr.Name} ({(layerSr.IsProjected ? "Projected" : "Geographic")})",
                                 ExpectedValue = $"WKID: {mapSr.Wkid}, Name: {mapSr.Name} ({(mapSr.IsProjected ? "Projected" : "Geographic")})",
                                 Recommendation = "Project the dataset to match the map's coordinate system to avoid on-the-fly projection overhead.",

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using APHI.Models;
+using APHI.Core.Models;
 
 namespace APHI.Reporting
 {

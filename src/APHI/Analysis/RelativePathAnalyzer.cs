@@ -24,10 +24,10 @@ public class RelativePathAnalyzer : IAnalyzer
     public string Description => "Checks if the project stores relative paths to data sources.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => true;
+    public IssueCategory Category => IssueCategory.RelativePath;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
 
@@ -74,8 +74,8 @@ public class RelativePathAnalyzer : IAnalyzer
                 {
                     Category = IssueCategory.RelativePath,
                     Severity = IssueSeverity.Medium,
-                    ItemName = project.Name,
-                    ItemPath = project.URI,
+                    AffectedItem = project.Name,
+                    AffectedItemPath = project.URI,
                     Description = "The project contains layers with absolute paths.",
                     Recommendation = "Configure the project or layers to use relative paths to improve project portability.",
                     AnalyzerName = this.Name
@@ -87,8 +87,8 @@ public class RelativePathAnalyzer : IAnalyzer
                 {
                     Category = IssueCategory.RelativePath,
                     Severity = IssueSeverity.Information,
-                    ItemName = project.Name,
-                    ItemPath = project.URI,
+                    AffectedItem = project.Name,
+                    AffectedItemPath = project.URI,
                     Description = "The project appears to use relative paths or enterprise connections correctly.",
                     Recommendation = "Maintain relative path usage for robust sharing.",
                     AnalyzerName = this.Name

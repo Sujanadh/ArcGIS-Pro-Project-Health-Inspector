@@ -23,10 +23,10 @@ public class LayerNamingAnalyzer : IAnalyzer
     public string Description => "Checks for generically named, duplicated, or draft-named layers.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => true;
+    public IssueCategory Category => IssueCategory.LayerNaming;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
         var maps = context.Project.GetItems<MapProjectItem>().ToList();
@@ -69,8 +69,8 @@ public class LayerNamingAnalyzer : IAnalyzer
                         {
                             Category = IssueCategory.LayerNaming,
                             Severity = IssueSeverity.Information,
-                            ItemName = name,
-                            ItemPath = mapItem.Name,
+                            AffectedItem = name,
+                            AffectedItemPath = mapItem.Name,
                             Description = "Name appears to be auto-generated from a dataset with underscores.",
                             Recommendation = "Consider replacing underscores with spaces for a cleaner map legend.",
                             AnalyzerName = this.Name
@@ -89,8 +89,8 @@ public class LayerNamingAnalyzer : IAnalyzer
         {
             Category = IssueCategory.LayerNaming,
             Severity = IssueSeverity.Low,
-            ItemName = name,
-            ItemPath = mapItem.Name,
+            AffectedItem = name,
+            AffectedItemPath = mapItem.Name,
             Description = description,
             Recommendation = "Rename the layer to be more descriptive and user-friendly for map legends.",
             AnalyzerName = this.Name

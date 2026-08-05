@@ -24,10 +24,10 @@ public class DefinitionQueryAnalyzer : IAnalyzer
     public string Description => "Checks definition queries for syntax errors, missing fields, and empty results.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => false;
+    public IssueCategory Category => IssueCategory.DefinitionQuery;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
         var maps = context.Project.GetItems<MapProjectItem>().ToList();
@@ -72,8 +72,8 @@ public class DefinitionQueryAnalyzer : IAnalyzer
                             {
                                 Category = IssueCategory.DefinitionQuery,
                                 Severity = IssueSeverity.Low,
-                                ItemName = layer.Name,
-                                ItemPath = mapItem.Name,
+                                AffectedItem = layer.Name,
+                                AffectedItemPath = mapItem.Name,
                                 Description = $"Inactive definition query found: '{dq.Name}'.",
                                 Recommendation = "Consider removing unused definition queries to avoid confusion and clutter.",
                                 AnalyzerName = this.Name
@@ -89,8 +89,8 @@ public class DefinitionQueryAnalyzer : IAnalyzer
                             {
                                 Category = IssueCategory.DefinitionQuery,
                                 Severity = IssueSeverity.High,
-                                ItemName = layer.Name,
-                                ItemPath = mapItem.Name,
+                                AffectedItem = layer.Name,
+                                AffectedItemPath = mapItem.Name,
                                 Description = $"Definition query '{dq.Name}' has unbalanced parentheses.",
                                 Recommendation = "Fix the SQL syntax of the definition query.",
                                 AnalyzerName = this.Name
@@ -110,8 +110,8 @@ public class DefinitionQueryAnalyzer : IAnalyzer
                                     {
                                         Category = IssueCategory.DefinitionQuery,
                                         Severity = IssueSeverity.High,
-                                        ItemName = layer.Name,
-                                        ItemPath = mapItem.Name,
+                                        AffectedItem = layer.Name,
+                                        AffectedItemPath = mapItem.Name,
                                         Description = $"Definition query '{dq.Name}' returns 0 records.",
                                         Recommendation = "Verify that the definition query logic is correct and matches the underlying data.",
                                         AnalyzerName = this.Name
@@ -124,8 +124,8 @@ public class DefinitionQueryAnalyzer : IAnalyzer
                                 {
                                     Category = IssueCategory.DefinitionQuery,
                                     Severity = IssueSeverity.High,
-                                    ItemName = layer.Name,
-                                    ItemPath = mapItem.Name,
+                                    AffectedItem = layer.Name,
+                                    AffectedItemPath = mapItem.Name,
                                     Description = $"Definition query '{dq.Name}' failed to execute (invalid SQL or missing field).",
                                     Recommendation = "Fix the SQL syntax and ensure all referenced fields exist in the layer.",
                                     AnalyzerName = this.Name

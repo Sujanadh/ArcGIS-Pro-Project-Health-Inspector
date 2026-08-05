@@ -24,10 +24,10 @@ public class SymbologyAnalyzer : IAnalyzer
     public string Description => "Checks layer symbology for missing symbols, broken style references, and unsupported types.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => false;
+    public IssueCategory Category => IssueCategory.Symbology;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
         var maps = context.Project.GetItems<MapProjectItem>().ToList();
@@ -73,8 +73,8 @@ public class SymbologyAnalyzer : IAnalyzer
                                             {
                                                 Category = IssueCategory.SymbologyIssue,
                                                 Severity = IssueSeverity.Medium,
-                                                ItemName = layer.Name,
-                                                ItemPath = mapItem.Name,
+                                                AffectedItem = layer.Name,
+                                                AffectedItemPath = mapItem.Name,
                                                 Description = $"Missing symbol reference in unique value class: {cls.Label}",
                                                 Recommendation = "Reassign the symbol for this unique value class or remove the class.",
                                                 AnalyzerName = this.Name
@@ -97,8 +97,8 @@ public class SymbologyAnalyzer : IAnalyzer
                             {
                                 Category = IssueCategory.SymbologyIssue,
                                 Severity = IssueSeverity.Medium,
-                                ItemName = layer.Name,
-                                ItemPath = mapItem.Name,
+                                AffectedItem = layer.Name,
+                                AffectedItemPath = mapItem.Name,
                                 Description = "Missing simple symbol reference.",
                                 Recommendation = "Reassign the symbol for this layer.",
                                 AnalyzerName = this.Name
@@ -131,8 +131,8 @@ public class SymbologyAnalyzer : IAnalyzer
                     {
                         Category = IssueCategory.SymbologyIssue,
                         Severity = IssueSeverity.Low,
-                        ItemName = layer.Name,
-                        ItemPath = mapItem.Name,
+                        AffectedItem = layer.Name,
+                        AffectedItemPath = mapItem.Name,
                         Description = "Character marker missing font family name.",
                         Recommendation = "Ensure the font required by this symbol is installed, or pick a different symbol.",
                         AnalyzerName = this.Name

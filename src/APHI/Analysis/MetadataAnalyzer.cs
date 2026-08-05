@@ -22,10 +22,10 @@ public class MetadataAnalyzer : IAnalyzer
     public string Description => "Evaluates whether datasets possess complete and well-formed metadata.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => false;
+    public IssueCategory Category => IssueCategory.Metadata;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
         var maps = context.Project.GetItems<MapProjectItem>().ToList();
@@ -67,8 +67,8 @@ public class MetadataAnalyzer : IAnalyzer
                             {
                                 Category = IssueCategory.Metadata,
                                 Severity = IssueSeverity.Low,
-                                ItemName = layer.Name,
-                                ItemPath = mapItem.Name,
+                                AffectedItem = layer.Name,
+                                AffectedItemPath = mapItem.Name,
                                 Description = "Layer is missing description or summary metadata.",
                                 Recommendation = "Update the layer or dataset metadata to include a summary, description, and tags.",
                                 AnalyzerName = this.Name

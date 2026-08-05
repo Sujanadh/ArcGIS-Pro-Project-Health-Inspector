@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Xunit;
-using APHI.Models;
+using APHI.Core.Models;
 using APHI.Analysis;
 
 namespace APHI.Tests.Analysis

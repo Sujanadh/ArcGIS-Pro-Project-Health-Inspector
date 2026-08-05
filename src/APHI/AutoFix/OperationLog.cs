@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using APHI.Models;
+using APHI.Core.Models;
 
 namespace APHI.AutoFix
 {
@@ -17,7 +17,7 @@ namespace APHI.AutoFix
         /// <summary>
         /// Gets the issue that was addressed.
         /// </summary>
-        public IssueModel Issue { get; set; }
+        public HealthIssue Issue { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the fix was successful.
@@ -48,7 +48,7 @@ namespace APHI.AutoFix
         /// <param name="issue">The issue being addressed.</param>
         /// <param name="success">Whether the fix was successful.</param>
         /// <param name="message">Optional message.</param>
-        public void AddEntry(IssueModel issue, bool success, string message = null)
+        public void AddEntry(HealthIssue issue, bool success, string message = null)
         {
             _entries.Add(new OperationLogEntry
             {

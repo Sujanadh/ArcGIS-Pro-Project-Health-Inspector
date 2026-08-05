@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Core.Data;
-using APHI.Models;
+using APHI.Core.Models;
 using ArcGIS.Desktop.Mapping;
 
 namespace APHI.AutoFix.Fixers
@@ -22,7 +22,7 @@ namespace APHI.AutoFix.Fixers
         /// </summary>
         /// <param name="issue">The issue referencing the feature class or layer.</param>
         /// <returns>True if fixed, otherwise false.</returns>
-        public async Task<bool> FixAsync(IssueModel issue)
+        public async Task<bool> FixAsync(HealthIssue issue)
         {
             return await QueuedTask.Run(() =>
             {

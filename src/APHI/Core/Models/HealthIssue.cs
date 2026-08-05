@@ -40,7 +40,7 @@ public class HealthIssue
     /// <summary>
     /// The path or URI of the affected item.
     /// </summary>
-    public string AffectedItemPath { get; set; } = string.Empty;
+    public string AffectedAffectedItemPath { get; set; } = string.Empty;
 
     /// <summary>
     /// The expected or recommended value.

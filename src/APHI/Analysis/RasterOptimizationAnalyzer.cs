@@ -24,10 +24,10 @@ public class RasterOptimizationAnalyzer : IAnalyzer
     public string Description => "Checks raster datasets for pyramids, statistics, and appropriate formats.";
 
     /// <inheritdoc />
-    public bool IsAutoFixable => true;
+    public IssueCategory Category => IssueCategory.RasterOptimization;
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<HealthIssue>> AnalyzeAsync(AnalysisContext context, IProgress<ScanProgress> progress, CancellationToken cancellationToken)
     {
         var issues = new List<HealthIssue>();
         var maps = context.Project.GetItems<MapProjectItem>().ToList();
@@ -70,8 +70,8 @@ public class RasterOptimizationAnalyzer : IAnalyzer
                                 {
                                     Category = IssueCategory.RasterOptimization,
                                     Severity = IssueSeverity.Medium,
-                                    ItemName = layer.Name,
-                                    ItemPath = mapItem.Name,
+                                    AffectedItem = layer.Name,
+                                    AffectedItemPath = mapItem.Name,
                                     Description = "Raster dataset is missing pyramids.",
                                     Recommendation = "Build pyramids for this raster to improve drawing performance at various scales.",
                                     AnalyzerName = this.Name
@@ -84,8 +84,8 @@ public class RasterOptimizationAnalyzer : IAnalyzer
                                 {
                                     Category = IssueCategory.RasterOptimization,
                                     Severity = IssueSeverity.Low,
-                                    ItemName = layer.Name,
-                                    ItemPath = mapItem.Name,
+                                    AffectedItem = layer.Name,
+                                    AffectedItemPath = mapItem.Name,
                                     Description = "Raster dataset is missing statistics.",
                                     Recommendation = "Calculate statistics to improve rendering speed and symbology accuracy.",
                                     AnalyzerName = this.Name

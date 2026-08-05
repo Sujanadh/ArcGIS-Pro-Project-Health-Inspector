@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using APHI.Models;
+using APHI.Core.Models;
 
 namespace APHI.AutoFix
 {
@@ -12,7 +12,7 @@ namespace APHI.AutoFix
         /// <summary>
         /// Gets or sets the issue that is being previewed.
         /// </summary>
-        public IssueModel Issue { get; set; }
+        public HealthIssue Issue { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the change that will be made.
@@ -35,7 +35,7 @@ namespace APHI.AutoFix
         /// <param name="issue">The issue to fix.</param>
         /// <param name="fixerName">The name of the fixer.</param>
         /// <returns>An AutoFixPreview instance.</returns>
-        public static AutoFixPreview GeneratePreview(IssueModel issue, string fixerName)
+        public static AutoFixPreview GeneratePreview(HealthIssue issue, string fixerName)
         {
             return new AutoFixPreview
             {
