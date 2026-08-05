@@ -38,11 +38,11 @@ namespace APHI.UI
         private string _statusMessage;
         private int _selectedTabIndex;
         private bool _cancelScanRequested;
-        private AnalyzerService _analyzerService;
+        private APHI.Core.Services.ProjectScanner _projectScanner;
 
         public InspectorDockpaneViewModel()
         {
-            _analyzerService = ServiceLocator.GetService<AnalyzerService>();
+            _projectScanner = ServiceLocator.Current.GetInstance<APHI.Core.Services.ProjectScanner>();
 
             ScanCommand = new RelayCommand(async _ => await ExecuteScanAsync(), _ => !IsScanning);
             CancelScanCommand = new RelayCommand(_ => ExecuteCancelScan(), _ => IsScanning);
@@ -107,9 +107,9 @@ namespace APHI.UI
                     ProjectName = Project.Current.Name;
                 }
 
-                var progress = new Progress<int>(p => ScanProgress = p);
+                var progress = new Progress<ScanProgress>(p => { ScanProgress = p.PercentComplete; ProgressMessage = p.CurrentOperation; });
                 
-                var results = await _analyzerService.AnalyzeCurrentProjectAsync(progress);
+                var results = await _projectScanner.ScanProjectAsync(progress, new System.Threading.CancellationToken());
                 
                 Issues.Clear();
                 foreach (var issue in results.Issues)
@@ -117,8 +117,8 @@ namespace APHI.UI
                     Issues.Add(new HealthIssueViewModel(issue));
                 }
                 
-                HealthScore = results.HealthScore;
-                PerformanceScore = results.PerformanceScore;
+                HealthScore = results.HealthScore.OverallScore;
+                PerformanceScore = results.PerformanceScore.OverallPerformanceScore;
                 CriticalCount = results.Issues.Count(i => i.Severity == IssueSeverity.Critical);
                 HighCount = results.Issues.Count(i => i.Severity == IssueSeverity.High);
                 MediumCount = results.Issues.Count(i => i.Severity == IssueSeverity.Medium);
@@ -159,7 +159,7 @@ namespace APHI.UI
             );
         }
 
-        private async Task ExecuteExportAsync(string format)
+                private async Task ExecuteExportAsync(string format)
         {
             try
             {
@@ -171,26 +171,24 @@ namespace APHI.UI
 
                 if (dialog.ShowDialog() == true)
                 {
-                    var results = new ScanResult
+                    var report = new HealthReport
                     {
+                        ProjectName = this.ProjectName,
                         Issues = Issues.Select(i => i.Model).ToList(),
-                        HealthScore = HealthScore,
-                        PerformanceScore = PerformanceScore,
-                        ScanDuration = ScanDuration,
-                        ScanTime = DateTime.Now
+                        HealthScore = new APHI.Core.Models.HealthScore { OverallScore = this.HealthScore },
+                        PerformanceScore = new APHI.Core.Models.PerformanceMetrics { OverallPerformanceScore = this.PerformanceScore },
+                        ScanStartTime = DateTime.Now - this.ScanDuration,
+                        ScanEndTime = DateTime.Now
                     };
                     
-                    ReportGenerator generator = null;
-                    if (format == "HTML") generator = new HtmlReportGenerator();
-                    else if (format == "CSV") generator = new CsvReportGenerator();
-                    else if (format == "JSON") generator = new JsonReportGenerator();
-                    else generator = new TextReportGenerator();
+                    var manager = new APHI.Reporting.ReportManager();
+                    APHI.Reporting.ReportFormat rFormat = APHI.Reporting.ReportFormat.Text;
+                    if (format == "HTML") rFormat = APHI.Reporting.ReportFormat.Html;
+                    else if (format == "CSV") rFormat = APHI.Reporting.ReportFormat.Csv;
+                    else if (format == "JSON") rFormat = APHI.Reporting.ReportFormat.Json;
                     
-                    if (generator != null)
-                    {
-                        await generator.GenerateAsync(results, dialog.FileName);
-                        ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show($"Report exported to {dialog.FileName}", "Export Successful");
-                    }
+                    await manager.SaveReportAsync(report, dialog.FileName, rFormat);
+                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show($"Report exported to {dialog.FileName}", "Export Successful");
                 }
             }
             catch (Exception ex)
@@ -209,18 +207,20 @@ namespace APHI.UI
             if (window.ShowDialog() == true)
             {
                 StatusMessage = "Applying fix...";
-                var fixer = ServiceLocator.GetService<APHI.AutoFix.AutoFixService>();
-                var result = await fixer.FixIssueAsync(SelectedIssue.Model);
-                if (result.Success)
+                                var fixer = new APHI.AutoFix.AutoFixEngine();
+                // A full implementation would register fixers here
+                var log = await fixer.FixIssuesAsync(new[] { SelectedIssue.Model });
+                var logEntry = System.Linq.Enumerable.FirstOrDefault(log.Entries);
+                if (logEntry != null && logEntry.Success)
                 {
                     StatusMessage = "Fix applied successfully.";
                     SelectedIssue.Model.IsFixed = true;
-                    
                 }
                 else
                 {
-                    StatusMessage = $"Fix failed: {result.ErrorMessage}";
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(result.ErrorMessage, "Auto-Fix Error");
+                    string err = logEntry != null ? logEntry.Message : "Unknown error";
+                    StatusMessage = $"Fix failed: {err}";
+                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(err, "Auto-Fix Error");
                 }
             }
         }
