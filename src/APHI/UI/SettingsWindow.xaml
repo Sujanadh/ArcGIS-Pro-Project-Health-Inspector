@@ -1,0 +1,59 @@
+<Window x:Class="APHI.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Inspector Settings" Height="450" Width="600"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0">
+            <TabItem Header="General">
+                <StackPanel Margin="10">
+                    <CheckBox Content="Enable Dark Mode" Margin="0,5" />
+                    <CheckBox Content="Show Informational Issues" Margin="0,5" />
+                    <TextBlock Text="Default Report Folder:" Margin="0,10,0,0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Margin="0,0,5,0" />
+                        <Button Grid.Column="1" Content="Browse..." Width="75" />
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Thresholds">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Large Feature Class Threshold:" />
+                    <TextBox Margin="0,5,0,10" />
+                    <TextBlock Text="Large Raster Size (MB):" />
+                    <TextBox Margin="0,5,0,10" />
+                    <TextBlock Text="Large GDB Size (MB):" />
+                    <TextBox Margin="0,5,0,10" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Weights">
+                <TextBlock Text="Weights Settings Placeholder" Margin="10" />
+            </TabItem>
+            <TabItem Header="Advanced">
+                <StackPanel Margin="10">
+                    <CheckBox Content="Enable Auto-Fix functionality" Margin="0,5" />
+                    <TextBlock Text="Ignored Folders:" Margin="0,10,0,0" />
+                    <ListBox Height="100" Margin="0,5" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Add" Width="60" Margin="0,0,5,0" />
+                        <Button Content="Remove" Width="60" />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Save" Command="{Binding SaveCommand}" Width="75" Margin="0,0,5,0" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Width="75" />
+        </StackPanel>
+    </Grid>
+</Window>

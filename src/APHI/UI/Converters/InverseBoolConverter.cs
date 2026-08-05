@@ -1,0 +1,36 @@
+using System;
+using System.Globalization;
+using System.Windows.Data;
+
+namespace APHI.UI.Converters
+{
+    /// <summary>
+    /// Converts a boolean value to its inverse.
+    /// </summary>
+    public class InverseBoolConverter : IValueConverter
+    {
+        /// <summary>
+        /// Converts a boolean value to its inverse.
+        /// </summary>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+            {
+                return !b;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Converts an inverted boolean value back to its original.
+        /// </summary>
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool b)
+            {
+                return !b;
+            }
+            return false;
+        }
+    }
+}
