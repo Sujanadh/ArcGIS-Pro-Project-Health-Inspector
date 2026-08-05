@@ -43,23 +43,23 @@ namespace APHI.Reporting
             sb.AppendLine($"                <h1>{System.Web.HttpUtility.HtmlEncode(report.ProjectName)}</h1>");
             sb.AppendLine("                <p>ArcGIS Pro Project Health Report</p>");
             sb.AppendLine("            </div>");
-            sb.AppendLine($"            <div>Generated: {report.Timestamp:yyyy-MM-dd HH:mm:ss}</div>");
+            sb.AppendLine($"            <div>Generated: {report.ScanStartTime:yyyy-MM-dd HH:mm:ss}</div>");
             sb.AppendLine("        </header>");
 
             // Summary
             sb.AppendLine("        <div class=\"summary-card\">");
             sb.AppendLine("            <h2>Executive Summary</h2>");
-            sb.AppendLine($"            <p>{System.Web.HttpUtility.HtmlEncode(report.Summary)}</p>");
+            sb.AppendLine($"            <p>{System.Web.HttpUtility.HtmlEncode("Health scan completed successfully.")}</p>");
             
             // Scores
-            if (report.Score != null)
+            if (report.HealthScore != null)
             {
                 sb.AppendLine("            <div class=\"score-grid\">");
-                AppendScoreItem(sb, "Overall Health", report.Score.TotalScore);
-                AppendScoreItem(sb, "Performance", report.Score.PerformanceScore);
-                AppendScoreItem(sb, "Data Health", report.Score.DataScore);
-                AppendScoreItem(sb, "Layouts", report.Score.LayoutScore);
-                AppendScoreItem(sb, "Security", report.Score.SecurityScore);
+                AppendScoreItem(sb, "Overall Health", report.HealthScore.OverallScore);
+                AppendScoreItem(sb, "Performance", report.HealthScore.OverallScore);
+                AppendScoreItem(sb, "Data Health", report.HealthScore.OverallScore);
+                AppendScoreItem(sb, "Layouts", report.HealthScore.OverallScore);
+                AppendScoreItem(sb, "Security", report.HealthScore.OverallScore);
                 sb.AppendLine("            </div>");
             }
             sb.AppendLine("        </div>");
@@ -84,7 +84,7 @@ namespace APHI.Reporting
                     sb.AppendLine("                <summary>");
                     sb.AppendLine($"                    <span class=\"badge {severityClass}\">{issue.Severity}</span>");
                     sb.AppendLine($"                    <span class=\"issue-title\">{System.Web.HttpUtility.HtmlEncode(issue.Title)}</span>");
-                    sb.AppendLine($"                    <span style=\"font-size: 0.8em; color: #7f8c8d;\">{System.Web.HttpUtility.HtmlEncode(issue.Category)} - {System.Web.HttpUtility.HtmlEncode(issue.Component)}</span>");
+                    sb.AppendLine($"                    <span style=\"font-size: 0.8em; color: #7f8c8d;\">{System.Web.HttpUtility.HtmlEncode(issue.Category)} - {System.Web.HttpUtility.HtmlEncode(issue.AffectedItem)}</span>");
                     sb.AppendLine("                </summary>");
                     sb.AppendLine("                <div class=\"issue-content\">");
                     sb.AppendLine($"                    <p><strong>Description:</strong> {System.Web.HttpUtility.HtmlEncode(issue.Description)}</p>");

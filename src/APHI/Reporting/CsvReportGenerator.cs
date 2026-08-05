@@ -25,8 +25,8 @@ namespace APHI.Reporting
 
             // Define base properties
             string projectName = EscapeCsv(report.ProjectName);
-            string timestamp = report.Timestamp.ToString("yyyy-MM-dd HH:mm:ss");
-            string totalScore = report.Score != null ? report.Score.TotalScore.ToString() : "N/A";
+            string timestamp = report.ScanStartTime.ToString("yyyy-MM-dd HH:mm:ss");
+            string totalScore = report.HealthScore != null ? report.HealthScore.OverallScore.ToString() : "N/A";
 
             if (report.Issues != null && report.Issues.Count > 0)
             {
@@ -36,8 +36,8 @@ namespace APHI.Reporting
                     sb.Append($"{timestamp},");
                     sb.Append($"{totalScore},");
                     sb.Append($"{issue.Severity},");
-                    sb.Append($"{EscapeCsv(issue.Category)},");
-                    sb.Append($"{EscapeCsv(issue.Component)},");
+                    sb.Append($"{EscapeCsv(issue.Category.ToString())},");
+                    sb.Append($"{EscapeCsv(issue.AffectedItem)},");
                     sb.Append($"{EscapeCsv(issue.Title)},");
                     sb.Append($"{EscapeCsv(issue.Description)},");
                     sb.AppendLine($"{EscapeCsv(issue.Recommendation)}");

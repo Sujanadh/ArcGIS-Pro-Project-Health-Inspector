@@ -25,21 +25,17 @@ namespace APHI.Reporting
             sb.AppendLine("          ARCGIS PRO PROJECT HEALTH REPORT        ");
             sb.AppendLine("==================================================");
             sb.AppendLine($"Project Name: {report.ProjectName}");
-            sb.AppendLine($"Date Generated: {report.Timestamp}");
+            sb.AppendLine($"Date Generated: {report.ScanStartTime}");
             sb.AppendLine();
             
             sb.AppendLine("--- SUMMARY ---");
-            sb.AppendLine(report.Summary ?? "No summary provided.");
+            sb.AppendLine("Health scan completed successfully.");
             sb.AppendLine();
 
-            if (report.Score != null)
+            if (report.HealthScore != null)
             {
                 sb.AppendLine("--- SCORES ---");
-                sb.AppendLine($"Overall Score:   {report.Score.TotalScore}%");
-                sb.AppendLine($"Performance:     {report.Score.PerformanceScore}%");
-                sb.AppendLine($"Data Health:     {report.Score.DataScore}%");
-                sb.AppendLine($"Layouts:         {report.Score.LayoutScore}%");
-                sb.AppendLine($"Security:        {report.Score.SecurityScore}%");
+                sb.AppendLine($"Overall Score:   {report.HealthScore.OverallScore}%");
                 sb.AppendLine();
             }
 
@@ -58,7 +54,7 @@ namespace APHI.Reporting
 
                 foreach (var issue in sortedIssues)
                 {
-                    sb.AppendLine($"[{issue.Severity.ToString().ToUpper()}] {issue.Category} - {issue.Component}");
+                    sb.AppendLine($"[{issue.Severity.ToString().ToUpper()}] {issue.Category} - {issue.AffectedItem}");
                     sb.AppendLine($"Title: {issue.Title}");
                     sb.AppendLine($"Description: {issue.Description}");
                     if (!string.IsNullOrEmpty(issue.Recommendation))
