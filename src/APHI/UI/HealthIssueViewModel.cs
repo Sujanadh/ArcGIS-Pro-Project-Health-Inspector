@@ -82,7 +82,7 @@ namespace APHI.UI
         /// <summary>
         /// Gets the suggested fix for this issue.
         /// </summary>
-        public string SuggestedFix => _model.SuggestedFix;
+        public string SuggestedFix => _model.Recommendation;
 
         /// <summary>
         /// Gets the severity color based on the severity.

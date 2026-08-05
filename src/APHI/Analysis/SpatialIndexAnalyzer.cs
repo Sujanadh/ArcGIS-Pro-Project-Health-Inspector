@@ -77,7 +77,7 @@ public class SpatialIndexAnalyzer : IAnalyzer
                                     Title = "Missing Spatial Index",
                                     Description = $"Feature layer '{layer.Name}' does not have a spatial index.",
                                     AffectedItem = layer.Name,
-                                    AffectedAffectedItemPath = layer.URI,
+                                    AffectedItemPath = layer.URI,
                                     CurrentValue = "No spatial index",
                                     ExpectedValue = "Has spatial index",
                                     Recommendation = "Create a spatial index for the feature class to improve drawing and spatial query performance.",

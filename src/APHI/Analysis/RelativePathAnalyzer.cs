@@ -34,8 +34,7 @@ public class RelativePathAnalyzer : IAnalyzer
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        await QueuedTask.Run(() =>
-        {
+        await QueuedTask.Run(() => {
             var project = context.Project;
             // Since ArcGIS Pro SDK does not expose a direct boolean for "store relative paths" 
             // easily via the API in recent versions, we infer or report based on home folder paths
@@ -55,7 +54,7 @@ public class RelativePathAnalyzer : IAnalyzer
                 {
                     if (layer is not BasicFeatureLayer featureLayer) continue;
 
-                    var connection = featureLayer.GetWorkspace()?.GetConnectionProperties();
+                    var connection = featureLayer.GetTable()?.GetDatastore()?.GetConnector() as ArcGIS.Core.Data.DatabaseConnectionProperties;
                     if (connection == null) continue;
 
                     string connectionString = connection.Instance ?? string.Empty;
@@ -96,7 +95,7 @@ public class RelativePathAnalyzer : IAnalyzer
                 });
             }
 
-        }, cancellationToken);
+        });
 
         return issues;
     }

@@ -34,8 +34,7 @@ public class MetadataAnalyzer : IAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await QueuedTask.Run(() =>
-            {
+            await QueuedTask.Run(() => {
                 var map = mapItem.GetMap();
                 if (map == null) return;
 
@@ -56,10 +55,8 @@ public class MetadataAnalyzer : IAnalyzer
                         // Due to SDK specifics, direct metadata property might require item retrieval. 
                         // Often accessible via featureLayer.HasMetadata or similar.
                         // We will use basic layer description and dataset alias as a proxy if full metadata XML isn't easily readable without an Item.
-                        string snippet = featureLayer.Snippet;
-                        string description = featureLayer.Description;
-                        
-                        bool hasDescription = !string.IsNullOrWhiteSpace(snippet) || !string.IsNullOrWhiteSpace(description);
+                        var cim = featureLayer.GetDefinition() as ArcGIS.Core.CIM.CIMFeatureLayer;
+                        bool hasDescription = cim != null && (!string.IsNullOrWhiteSpace(cim.Description) || !string.IsNullOrWhiteSpace(cim.Snippet));
 
                         if (!hasDescription)
                         {
@@ -81,7 +78,7 @@ public class MetadataAnalyzer : IAnalyzer
                     }
                     catch { /* ignored for datasets that don't support metadata */ }
                 }
-            }, cancellationToken);
+            });
         }
 
         return issues;

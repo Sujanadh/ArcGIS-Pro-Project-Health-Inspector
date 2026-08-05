@@ -44,8 +44,7 @@ public class SymbologyAnalyzer : IAnalyzer
                 PercentComplete = (currentMap * 100) / (totalMaps > 0 ? totalMaps : 1) 
             });
 
-            await QueuedTask.Run(() =>
-            {
+            await QueuedTask.Run(() => {
                 var map = mapItem.GetMap();
                 if (map == null) return;
 
@@ -110,7 +109,7 @@ public class SymbologyAnalyzer : IAnalyzer
                         }
                     }
                 }
-            }, cancellationToken);
+            });
 
             currentMap++;
         }

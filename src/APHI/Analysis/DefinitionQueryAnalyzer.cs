@@ -36,8 +36,7 @@ public class DefinitionQueryAnalyzer : IAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
             
-            await QueuedTask.Run(() =>
-            {
+            await QueuedTask.Run(() => {
                 var map = mapItem.GetMap();
                 if (map == null) return;
 
@@ -134,7 +133,7 @@ public class DefinitionQueryAnalyzer : IAnalyzer
                         }
                     }
                 }
-            }, cancellationToken);
+            });
         }
 
         return issues;

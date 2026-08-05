@@ -73,7 +73,7 @@ public class LabelAnalyzer : IAnalyzer
                             {
                                 foreach (var labelClass in labelClasses)
                                 {
-                                    if (labelClass.ExpressionEngine == CIMExpressionEngine.VBScript)
+                                    if (labelClass.ExpressionEngine == "VBScript")
                                     {
                                         issues.Add(new HealthIssue
                                         {
@@ -82,7 +82,7 @@ public class LabelAnalyzer : IAnalyzer
                                             Title = "Deprecated Label Engine",
                                             Description = $"Layer '{layer.Name}' uses VBScript for labeling, which is deprecated.",
                                             AffectedItem = layer.Name,
-                                            AffectedAffectedItemPath = layer.URI,
+                                            AffectedItemPath = layer.URI,
                                             CurrentValue = "VBScript",
                                             ExpectedValue = "Arcade or Python",
                                             Recommendation = "Migrate label expressions to Arcade or Python.",
@@ -94,7 +94,7 @@ public class LabelAnalyzer : IAnalyzer
                                             LayerName = layer.Name
                                         });
                                     }
-                                    else if (labelClass.ExpressionEngine == CIMExpressionEngine.Python || labelClass.ExpressionEngine == CIMExpressionEngine.Arcade)
+                                    else if (labelClass.ExpressionEngine == "Python" || labelClass.ExpressionEngine == "Arcade")
                                     {
                                         if (labelClass.Expression != null && labelClass.Expression.Length > 200)
                                         {
@@ -105,7 +105,7 @@ public class LabelAnalyzer : IAnalyzer
                                                 Title = "Complex Label Expression",
                                                 Description = $"Layer '{layer.Name}' has a highly complex label expression.",
                                                 AffectedItem = layer.Name,
-                                                AffectedAffectedItemPath = layer.URI,
+                                                AffectedItemPath = layer.URI,
                                                 CurrentValue = "Length > 200 characters",
                                                 ExpectedValue = "Simpler expression or pre-calculated field",
                                                 Recommendation = "Consider calculating complex label strings into a new attribute field to improve drawing performance.",

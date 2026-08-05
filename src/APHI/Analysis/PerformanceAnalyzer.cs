@@ -35,8 +35,7 @@ public class PerformanceAnalyzer : IAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await QueuedTask.Run(() =>
-            {
+            await QueuedTask.Run(() => {
                 var map = mapItem.GetMap();
                 if (map == null) return;
 
@@ -72,10 +71,8 @@ public class PerformanceAnalyzer : IAnalyzer
                         }
 
                         // Labeling
-                        if (featureLayer.IsLabelingEnabled)
-                        {
-                            score -= 2;
-                        }
+                        var cim = featureLayer.GetDefinition() as ArcGIS.Core.CIM.CIMFeatureLayer;
+                        if (cim != null && cim.UseVisibility) { score -= 2; }
 
                         // Try to evaluate count if safe
                         try
@@ -129,7 +126,7 @@ public class PerformanceAnalyzer : IAnalyzer
                         AnalyzerName = this.Name
                     });
                 }
-            }, cancellationToken);
+            });
         }
 
         return issues;

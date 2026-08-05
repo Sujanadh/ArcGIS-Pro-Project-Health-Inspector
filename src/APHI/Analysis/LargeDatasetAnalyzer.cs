@@ -81,7 +81,7 @@ public class LargeDatasetAnalyzer : IAnalyzer
                                     Title = "Large Dataset",
                                     Description = $"Layer '{layer.Name}' contains {count:N0} records, exceeding the threshold.",
                                     AffectedItem = layer.Name,
-                                    AffectedAffectedItemPath = layer.URI,
+                                    AffectedItemPath = layer.URI,
                                     CurrentValue = $"{count:N0} records",
                                     ExpectedValue = $"< {ThresholdCountMedium:N0} records for optimal map performance",
                                     Recommendation = "Ensure spatial indexes are up to date, use definition queries, or enable scale dependency to prevent drawing all features at once.",

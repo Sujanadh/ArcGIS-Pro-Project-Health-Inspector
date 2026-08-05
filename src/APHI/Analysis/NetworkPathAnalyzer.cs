@@ -36,8 +36,7 @@ public class NetworkPathAnalyzer : IAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await QueuedTask.Run(() =>
-            {
+            await QueuedTask.Run(() => {
                 var map = mapItem.GetMap();
                 if (map == null) return;
 
@@ -47,7 +46,9 @@ public class NetworkPathAnalyzer : IAnalyzer
                 {
                     if (layer is not BasicFeatureLayer featureLayer) continue;
 
-                    var connection = featureLayer.GetWorkspace()?.GetConnectionProperties();
+                    var connection = featureLayer.GetTable()?.GetDatastore()?.GetConnector() as ArcGIS.Core.Data.DatabaseConnectionProperties;
+                    if (connection == null) continue;
+                    string connectionString = connection.Instance ?? string.Empty;
                     if (connection == null) continue;
 
                     string connectionString = connection.Instance ?? string.Empty;
@@ -99,7 +100,7 @@ public class NetworkPathAnalyzer : IAnalyzer
                         });
                     }
                 }
-            }, cancellationToken);
+            });
         }
 
         return issues;

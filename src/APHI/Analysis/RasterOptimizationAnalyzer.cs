@@ -36,8 +36,7 @@ public class RasterOptimizationAnalyzer : IAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await QueuedTask.Run(() =>
-            {
+            await QueuedTask.Run(() => {
                 var map = mapItem.GetMap();
                 if (map == null) return;
 
@@ -98,7 +97,7 @@ public class RasterOptimizationAnalyzer : IAnalyzer
                         // Some rasters like image services might fail these checks, ignore them safely.
                     }
                 }
-            }, cancellationToken);
+            });
         }
 
         return issues;

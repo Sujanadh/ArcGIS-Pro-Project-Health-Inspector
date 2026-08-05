@@ -80,7 +80,7 @@ public class BrokenJoinAnalyzer : IAnalyzer
                                     Title = "Broken Join",
                                     Description = $"Layer '{layer.Name}' contains a join that is broken or inaccessible.",
                                     AffectedItem = layer.Name,
-                                    AffectedAffectedItemPath = layer.URI,
+                                    AffectedItemPath = layer.URI,
                                     CurrentValue = "Broken Join",
                                     ExpectedValue = "Valid Join",
                                     Recommendation = "Remove the broken join or fix the target table's data source.",
