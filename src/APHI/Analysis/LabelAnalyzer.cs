@@ -118,7 +118,6 @@ public class LabelAnalyzer : IAnalyzer
                                     }
                                 }
                             }
-                        }
                     });
                 }
                 catch (Exception)
