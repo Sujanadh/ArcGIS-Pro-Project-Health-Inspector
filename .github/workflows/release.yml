@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore src/APHI/APHI.csproj
+      
+    - name: Build Release
+      run: dotnet build src/APHI/APHI.csproj --configuration Release --no-restore
+
+    - name: Verify .esriAddinX was created
+      run: |
+        $addinPath = Get-ChildItem -Path "src/APHI/bin/Release" -Filter "*.esriAddinX" -Recurse
+        if ($addinPath) {
+          Write-Host "Found add-in: $($addinPath.FullName)"
+          Write-Host "Size: $([math]::Round($addinPath.Length / 1KB, 2)) KB"
+        } else {
+          Write-Host "esriAddinX not found in build output, creating manually..."
+          $outputDir = "src/APHI/bin/Release"
+          Compress-Archive -Path "$outputDir/*" -DestinationPath "$outputDir/ProjectHealthInspector.esriAddinX" -Force
+        }
+      shell: pwsh
+
+    - name: Extract version from tag
+      id: version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $env:GITHUB_OUTPUT
+      shell: pwsh
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        name: "ArcGIS Pro Project Health Inspector v${{ steps.version.outputs.VERSION }}"
+        body: |
+          ## ArcGIS Pro Project Health Inspector v${{ steps.version.outputs.VERSION }}
+          
+          > *Grammarly for ArcGIS Pro Projects*
+          
+          ### Installation
+          1. Download `ProjectHealthInspector.esriAddinX` below
+          2. Double-click the file to install in ArcGIS Pro
+          3. Restart ArcGIS Pro
+          4. Find the **Health Inspector** tab in the ribbon
+          
+          ### Requirements
+          - ArcGIS Pro 3.3 or later
+          - Windows 10/11
+          - No internet connection required
+          
+          ### Features
+          - 🔍 **16 Analysis Categories** — Broken paths, duplicates, projections, empty datasets, large datasets, spatial indexes, joins, labels, symbology, definition queries, network paths, relative paths, raster optimization, layer naming, performance, metadata
+          - 📊 **Health Score** — 0-100 weighted project quality score
+          - 🔧 **Auto-Fix** — 7 safe automatic repair operations with preview and rollback
+          - 📄 **Reports** — HTML, CSV, JSON, and plain text
+          - 🎨 **Modern UI** — Dockpane with search, filter, sort, and dark mode support
+          
+          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for full details.
+        files: |
+          src/APHI/bin/Release/ProjectHealthInspector.esriAddinX
+        draft: false
+        prerelease: false
+        generate_release_notes: true

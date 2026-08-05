@@ -3,13 +3,21 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
     <OutputType>Library</OutputType>
+    <RootNamespace>APHI</RootNamespace>
+    <AssemblyName>APHI</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0</Version>
+    <Authors>APHI Contributors</Authors>
+    <Company>APHI</Company>
+    <Product>ArcGIS Pro Project Health Inspector</Product>
+    <Description>Grammarly for ArcGIS Pro Projects — Comprehensive health analysis, scoring, and auto-fix for .aprx projects.</Description>
+    <Copyright>Copyright © 2024-2026 APHI Contributors</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,12 +28,29 @@
     <None Update="Config.daml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Images\HealthInspector16.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Images\HealthInspector32.png">
+    <None Update="Images\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <!-- 
+    Post-build: Package the add-in as .esriAddinX
+    An .esriAddinX is a ZIP archive containing:
+      - Config.daml (the add-in manifest)
+      - APHI.dll (the compiled assembly)
+      - Image resources
+      - Any other required runtime files
+    The archive is created in the output directory.
+  -->
+  <Target Name="PackageAddin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <AddinFileName>ProjectHealthInspector.esriAddinX</AddinFileName>
+      <AddinOutputPath>$(OutputPath)$(AddinFileName)</AddinOutputPath>
+    </PropertyGroup>
+    <Delete Files="$(AddinOutputPath)" Condition="Exists('$(AddinOutputPath)')" />
+    <ZipDirectory SourceDirectory="$(OutputPath)" DestinationFile="$(AddinOutputPath)"
+                  Overwrite="true" />
+    <Message Importance="high" Text="Add-in packaged: $(AddinOutputPath)" />
+  </Target>
 
 </Project>
