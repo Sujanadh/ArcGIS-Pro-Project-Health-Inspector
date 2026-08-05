@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esri.ArcGISPro.Extensions" Version="3.3.*" />
+    <PackageReference Include="Esri.ArcGISPro.Extensions30" Version="3.3.*" />
   </ItemGroup>
 
   <ItemGroup>
