@@ -45,11 +45,10 @@
   <Target Name="PackageAddin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
     <PropertyGroup>
       <AddinFileName>ProjectHealthInspector.esriAddinX</AddinFileName>
-      <AddinOutputPath>$(OutputPath)$(AddinFileName)</AddinOutputPath>
+      <AddinOutputPath>$(TargetDir)..\$(AddinFileName)</AddinOutputPath>
     </PropertyGroup>
     <Delete Files="$(AddinOutputPath)" Condition="Exists('$(AddinOutputPath)')" />
-    <ZipDirectory SourceDirectory="$(OutputPath)" DestinationFile="$(AddinOutputPath)"
-                  Overwrite="true" />
+    <ZipDirectory SourceDirectory="$(OutputPath)" DestinationFile="$(AddinOutputPath)" Overwrite="true" />
     <Message Importance="high" Text="Add-in packaged: $(AddinOutputPath)" />
   </Target>
 

@@ -29,13 +29,13 @@ jobs:
 
     - name: Verify .esriAddinX was created
       run: |
-        $addinPath = Get-ChildItem -Path "src/APHI/bin/Release" -Filter "*.esriAddinX" -Recurse
+        $addinPath = Get-ChildItem -Path "src/APHI/bin" -Filter "*.esriAddinX" -Recurse
         if ($addinPath) {
           Write-Host "Found add-in: $($addinPath.FullName)"
           Write-Host "Size: $([math]::Round($addinPath.Length / 1KB, 2)) KB"
         } else {
           Write-Host "esriAddinX not found in build output, creating manually..."
-          $outputDir = "src/APHI/bin/Release"
+          $outputDir = "src/APHI/bin"
           Compress-Archive -Path "$outputDir/*" -DestinationPath "$outputDir/ProjectHealthInspector.esriAddinX" -Force
         }
       shell: pwsh
@@ -74,7 +74,13 @@ jobs:
           
           See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for full details.
         files: |
-          src/APHI/bin/Release/ProjectHealthInspector.esriAddinX
+          src/APHI/bin/ProjectHealthInspector.esriAddinX
         draft: false
         prerelease: false
         generate_release_notes: true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: APHI-Addin
+        path: src/APHI/bin/ProjectHealthInspector.esriAddinX
