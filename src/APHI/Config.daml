@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ArcGIS defaultAssembly="APHI.dll" defaultNamespace="APHI" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{3b1e7c9f-3d61-4c12-a7f9-2b0e3b9f4a12}" version="1.0.0" desktopVersion="3.3.0">
+  <AddInInfo id="{3b1e7c9f-3d61-4c12-a7f9-2b0e3b9f4a12}" version="1.0.1" desktopVersion="3.3.0">
     <Name>Project Health Inspector</Name>
     <Description>Analyzes ArcGIS Pro projects for performance, best practices, and data integrity issues.</Description>
     <Image>Images\HealthInspector32.png</Image>
@@ -28,23 +28,23 @@
       </groups>
       
       <controls>
-        <button id="APHI_OpenInspectorButton" caption="Open Inspector" className="OpenInspectorButton" loadOnClick="true" smallImage="Images\HealthInspector16.png" largeImage="Images\HealthInspector32.png">
+        <button id="APHI_OpenInspectorButton" caption="Open Inspector" className="UI.Commands.OpenInspectorCommand" loadOnClick="true" smallImage="Images\HealthInspector16.png" largeImage="Images\HealthInspector32.png">
           <tooltip heading="Open Inspector">Opens the Project Health Inspector pane.</tooltip>
         </button>
-        <button id="APHI_RunScanButton" caption="Run Scan" className="RunScanButton" loadOnClick="true" smallImage="Images\HealthInspector16.png">
+        <button id="APHI_RunScanButton" caption="Run Scan" className="UI.Commands.RunScanCommand" loadOnClick="true" smallImage="Images\HealthInspector16.png">
           <tooltip heading="Run Scan">Starts a health scan of the current project.</tooltip>
         </button>
-        <button id="APHI_ExportReportButton" caption="Export Report" className="ExportReportButton" loadOnClick="true" smallImage="Images\HealthInspector16.png">
+        <button id="APHI_ExportReportButton" caption="Export Report" className="UI.Commands.ExportReportCommand" loadOnClick="true" smallImage="Images\HealthInspector16.png">
           <tooltip heading="Export Report">Exports the last scan results to a report.</tooltip>
         </button>
-        <button id="APHI_OpenSettingsButton" caption="Settings" className="OpenSettingsButton" loadOnClick="true" smallImage="Images\HealthInspector16.png">
+        <button id="APHI_OpenSettingsButton" caption="Settings" className="UI.Commands.OpenSettingsCommand" loadOnClick="true" smallImage="Images\HealthInspector16.png">
           <tooltip heading="Settings">Configures the Project Health Inspector settings.</tooltip>
         </button>
       </controls>
 
       <dockPanes>
-        <dockPane id="APHI_InspectorDockpane" caption="Project Health Inspector" className="InspectorDockpane" dock="group" dockWith="esri_core_projectDockPane">
-          <content className="InspectorDockpaneView" />
+        <dockPane id="APHI_UI_InspectorDockpane" caption="Project Health Inspector" className="UI.InspectorDockpaneViewModel" dock="group" dockWith="esri_core_projectDockPane">
+          <content className="UI.InspectorDockpane" />
         </dockPane>
       </dockPanes>
     </insertModule>

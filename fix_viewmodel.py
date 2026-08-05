@@ -1,4 +1,6 @@
-using System;
+import os
+
+content = """using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -173,7 +175,7 @@ namespace APHI.UI
                 {
                     var results = new ScanResult
                     {
-                        Issues = Issues.Select(i => i.Model).ToList(),
+                        Issues = Issues.Select(i => i.Issue).ToList(),
                         HealthScore = HealthScore,
                         PerformanceScore = PerformanceScore,
                         ScanDuration = ScanDuration,
@@ -203,19 +205,19 @@ namespace APHI.UI
         {
             if (SelectedIssue == null || !SelectedIssue.IsAutoFixable) return;
             
-            var vm = new AutoFixPreviewViewModel(SelectedIssue.Model);
+            var vm = new AutoFixPreviewViewModel(SelectedIssue.Issue);
             var window = new AutoFixPreviewWindow { DataContext = vm };
             
             if (window.ShowDialog() == true)
             {
                 StatusMessage = "Applying fix...";
                 var fixer = ServiceLocator.GetService<APHI.AutoFix.AutoFixService>();
-                var result = await fixer.FixIssueAsync(SelectedIssue.Model);
+                var result = await fixer.FixIssueAsync(SelectedIssue.Issue);
                 if (result.Success)
                 {
                     StatusMessage = "Fix applied successfully.";
-                    SelectedIssue.Model.IsFixed = true;
-                    
+                    SelectedIssue.Issue.IsFixed = true;
+                    SelectedIssue.Refresh();
                 }
                 else
                 {
@@ -261,3 +263,7 @@ namespace APHI.UI
         }
     }
 }
+"""
+
+with open("src/APHI/UI/InspectorDockpaneViewModel.cs", "w") as f:
+    f.write(content)

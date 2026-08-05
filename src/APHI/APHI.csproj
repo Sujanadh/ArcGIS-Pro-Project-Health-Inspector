@@ -7,9 +7,9 @@
     <RootNamespace>APHI</RootNamespace>
     <AssemblyName>APHI</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
     <Authors>APHI Contributors</Authors>
     <Company>APHI</Company>
     <Product>ArcGIS Pro Project Health Inspector</Product>
