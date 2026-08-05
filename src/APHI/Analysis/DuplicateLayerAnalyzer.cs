@@ -91,7 +91,7 @@ public class DuplicateLayerAnalyzer : IAnalyzer
                         }
 
                         // Check for duplicate data sources
-                        var definition = layer.GetDefinition() as CIMDataLayer;
+                        var definition = layer.GetDefinition() as CIMFeatureLayer;
                         if (definition?.DataConnection != null)
                         {
                             var connString = GetConnectionString(definition.DataConnection);

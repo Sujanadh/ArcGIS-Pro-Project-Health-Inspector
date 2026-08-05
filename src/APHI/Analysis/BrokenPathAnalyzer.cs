@@ -66,7 +66,7 @@ public class BrokenPathAnalyzer : IAnalyzer
                 {
                     await QueuedTask.Run(() =>
                     {
-                        var definition = layer.GetDefinition() as CIMDataLayer;
+                        var definition = layer.GetDefinition() as CIMFeatureLayer;
                         if (definition?.DataConnection != null)
                         {
                             bool isBroken = CheckDataConnection(definition.DataConnection);

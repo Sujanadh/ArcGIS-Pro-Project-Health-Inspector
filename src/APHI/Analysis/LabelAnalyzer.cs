@@ -64,27 +64,25 @@ public class LabelAnalyzer : IAnalyzer
                 {
                     await QueuedTask.Run(() =>
                     {
-                        if (layer.IsLabelClassesEnabled)
-                        {
-                            var definition = layer.GetDefinition() as CIMFeatureLayer;
-                            var labelClasses = definition?.LabelClasses;
+                        var definition = layer.GetDefinition() as CIMFeatureLayer;
+                        var labelClasses = definition?.LabelClasses;
 
-                            if (labelClasses != null)
+                        if (labelClasses != null)
+                        {
+                            foreach (var labelClass in labelClasses)
                             {
-                                foreach (var labelClass in labelClasses)
+                                if (labelClass.ExpressionEngine == LabelExpressionEngine.VBScript)
                                 {
-                                    if (labelClass.ExpressionEngine == LabelExpressionEngine.VBScript)
+                                    issues.Add(new HealthIssue
                                     {
-                                        issues.Add(new HealthIssue
-                                        {
-                                            Category = Category,
-                                            Severity = IssueSeverity.Medium,
-                                            Title = "Deprecated Label Engine",
-                                            Description = $"Layer '{layer.Name}' uses VBScript for labeling, which is deprecated.",
-                                            AffectedItem = layer.Name,
-                                            AffectedItemPath = layer.URI,
-                                            CurrentValue = LabelExpressionEngine.VBScript,
-                                            ExpectedValue = "Arcade or Python",
+                                        Category = Category,
+                                        Severity = IssueSeverity.Medium,
+                                        Title = "Deprecated Label Engine",
+                                        Description = $"Layer '{layer.Name}' uses VBScript for labeling, which is deprecated.",
+                                        AffectedItem = layer.Name,
+                                        AffectedItemPath = layer.URI,
+                                        CurrentValue = LabelExpressionEngine.VBScript.ToString(),
+                                        ExpectedValue = "Arcade or Python",
                                             Recommendation = "Migrate label expressions to Arcade or Python.",
                                             Impact = "VBScript expressions may cause errors or not run in future releases/enterprise environments.",
                                             EstimatedBenefit = "Modernizes project and ensures future compatibility.",

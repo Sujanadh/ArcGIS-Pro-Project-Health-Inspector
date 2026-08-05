@@ -101,7 +101,7 @@ public class DefinitionQueryAnalyzer : IAnalyzer
                         {
                             try
                             {
-                                using var queryFilter = new QueryFilter { WhereClause = sql };
+                                var queryFilter = new QueryFilter { WhereClause = sql };
                                 using var rowCursor = table.Search(queryFilter, false);
                                 if (!rowCursor.MoveNext())
                                 {
