@@ -21,12 +21,15 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
         
     - name: Restore dependencies
-      run: dotnet restore APHI.sln
+      run: dotnet restore src/APHI/APHI.csproj
       
     - name: Build
-      run: dotnet build APHI.sln --no-restore --configuration Release
+      run: msbuild src/APHI/APHI.csproj /p:Configuration=Release
       
     - name: Test
-      run: dotnet test APHI.sln --no-build --verbosity normal --configuration Release
+      run: dotnet test src/APHI/APHI.csproj --no-build --verbosity normal --configuration Release
